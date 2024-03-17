@@ -1,7 +1,7 @@
 *.log
 *.lock
 # Ignorar archivos generados por TypeScript
-*.js
+# *.js
 *.js.map
 
 # Ignorar carpeta node_modules
