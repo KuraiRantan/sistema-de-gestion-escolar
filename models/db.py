@@ -6,6 +6,7 @@
 # -------------------------------------------------------------------------
 from gluon.contrib.appconfig import AppConfig
 from gluon.tools import Auth
+import os
 
 # -------------------------------------------------------------------------
 # This scaffolding model makes your app work on Google App Engine too
@@ -26,11 +27,17 @@ if request.global_settings.web2py_version < "2.15.5":
 # -------------------------------------------------------------------------
 configuration = AppConfig(reload=True)
 
+driver = os.environ.get('WEB2PY_DRIVER')
+user = os.environ.get('DB_USER')
+pwd = os.environ.get('DB_PASSWORD')
+host = os.environ.get('HOST_CONTAINER')
+db_name = os.environ.get('DB_NAME')
+
 if not request.env.web2py_runtime_gae:
     # ---------------------------------------------------------------------
     # if NOT running on Google App Engine use SQLite or other DB
     # ---------------------------------------------------------------------
-    db = DAL(configuration.get('db.uri'),
+    db = DAL(f'{driver}://{user}:{pwd}@{host}/{db_name}',
              pool_size=configuration.get('db.pool_size'),
              migrate_enabled=configuration.get('db.migrate'),
              check_reserved=['all'])
@@ -54,7 +61,7 @@ else:
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'
 # -------------------------------------------------------------------------
-response.generic_patterns = [] 
+response.generic_patterns = []
 if request.is_local and not configuration.get('app.production'):
     response.generic_patterns.append('*')
 
@@ -148,7 +155,47 @@ if configuration.get('scheduler.enabled'):
 # >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
+# Define the tables using DAL
+from datetime import datetime, timezone, timedelta
 
+# Define the tables
+db.define_table('student',
+    Field('id', 'integer', required=True, unique=True),
+    Field('type_of_identification', 'string', required=True),
+    Field('identification', 'string', required=True, unique=True),
+    Field('first_name', 'string', required=True),
+    Field('last_name', 'string', required=True),
+    Field('birthdate', 'date', required=True),
+    Field('gender', 'string', required=True),
+    Field('address', 'string'),
+    Field('email', 'string'),
+    Field('phone', 'string'),
+    Field('current_grade', 'string', required=True)
+)
+
+db.define_table('subject',
+    Field('id', 'integer', required=True, unique=True),
+    Field('name', 'string', required=True),
+    Field('description', 'string'),
+)
+
+db.define_table('classroom',
+    Field('id', 'integer', required=True, unique=True),
+    Field('name', 'string', required=True),
+    Field('capacity', 'integer', required=True),
+    Field('ubication', 'string', required=True)
+)
+
+db.define_table('attendance',
+    Field('id', 'integer', required=True, unique=True),
+    Field('student', 'reference student', required=True),
+    Field('subject', 'reference subject', required=True),
+    Field('classroom', 'reference classroom', required=True),
+    Field('grade', 'string', required=True),
+    Field('attendance_date', 'date', default=lambda: (datetime.now(timezone.utc) - timedelta(hours=5)).date(), required=True),
+    Field('status', 'string', default='Unknown', required=True),
+    Field('notes', 'text')
+)
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
