@@ -1,0 +1,16 @@
+*.log
+*.lock
+# Ignorar archivos generados por TypeScript
+*.js
+*.js.map
+
+# Ignorar carpeta node_modules
+node_modules/
+
+# Ignorar archivos de configuración locales
+#*.conf
+#*.ini
+
+# Ignorar archivos de dependencias de desarrollo
+*.d.ts
+*.d.ts.map

@@ -1,0 +1,25 @@
+# Ignore archivos generados por web2py
+*.pyc
+*.pyo
+*.bak
+*.orig
+*.swp
+
+# Ignorar carpetas generadas por web2py
+databases/
+errors/
+sessions/
+compiled/
+cache/
+
+# Ignorar archivos de configuración local
+#*.conf
+#*.ini
+
+# Ignorar archivos de base de datos locales
+*.sqlite
+
+# Ignorar archivos de log
+*.log
+
+.env
