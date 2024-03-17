@@ -1,0 +1,24 @@
+version: "3"
+services:
+  web2py:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${PORT:-8000}:8000"
+    container_name: SGE
+    image: web2py:2.27.1
+    volumes:
+      - .:/home/admin/web2py/applications/SGE
+    env_file:
+      - .env
+    environment:
+      - PASSWORD_ADMIN_SERVER=${PASSWORD_ADMIN_SERVER:-pwd}
+  db:
+    image: postgres
+    ports:
+      - "8006:5432"
+    restart: always
+    container_name: SGE_DB
+    env_file:
+      - .env

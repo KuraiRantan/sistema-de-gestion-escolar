@@ -1,0 +1,40 @@
+FROM python:3.8-bookworm
+
+LABEL version = "1.0.0"
+LABEL description = ""
+LABEL org.opencontainers.image.authors = "Jorge Camargo<jorgecamargo2012902@gmail.com>"
+
+ENV PASSWORD_ADMIN_SERVER=pwd
+
+RUN apt-get update && apt-get upgrade -y
+
+RUN apt-get install -y wget unzip python3-pip libpq-dev
+
+RUN apt-get install -y openssl
+
+RUN useradd -m admin
+
+USER admin
+
+WORKDIR /home/admin
+
+RUN wget https://mdipierro.pythonanywhere.com/examples/static/web2py_src.zip
+
+RUN unzip web2py_src.zip
+
+RUN rm web2py_src.zip
+
+WORKDIR /home/admin/web2py
+
+RUN mkdir ./applications/SGE
+
+RUN mkdir ssl
+
+RUN openssl genrsa -out ./ssl/server.key 2048
+
+RUN openssl req -new -x509 -key ./ssl/server.key -out ./ssl/server.crt -days 3650 -subj "/CN=localhost"
+
+EXPOSE 8000
+
+# ENTRYPOINT ["./web2py.py", "-i", "0.0.0.0", "-a", "${PASSWORD_ADMIN_SERVER}", "-c", "./ssl/server.crt", "-k", "./ssl/server.key"]
+ENTRYPOINT ["./applications/SGE/entry_point.sh"]
