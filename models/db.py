@@ -7,6 +7,22 @@
 from gluon.contrib.appconfig import AppConfig
 from gluon.tools import Auth
 import os
+import sys
+
+# Add the application's path to sys.path for module recognition outside of the web2py flow
+# Get the absolute path of the current directory (where db.py is located)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Generating the final path which will be the root of the application
+full_path = os.path.join(current_dir, '../')
+
+# Normalize the path of the final directory
+full_path_normalized = os.path.abspath(full_path)
+
+# Check if the final directory is already in sys.path
+if full_path_normalized not in sys.path:
+    # Add the normalized final directory to sys.path
+    sys.path.append(full_path_normalized)
 
 # -------------------------------------------------------------------------
 # This scaffolding model makes your app work on Google App Engine too
