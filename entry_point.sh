@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Instalar requisitos
 pip3 install -r ./applications/SGE/requirements.txt
