@@ -110,14 +110,14 @@ class Attendance(object):
         """Set the additional general considerations regarding the day's attendance."""
         self._notes = value
 
-    def as_dict(self, include_none_data=False) -> Dict[str, Union[int, str, date, dict, None]]:
+    def as_dict(self, include_none_data=False) -> Dict[str, Union[int, str, date, Dict, None]]:
         """Represents class attribute information as a data dictionary.
 
         Args:
             include_none_data (bool, optional): Indicates whether or not to include data with a value of None in the dict. Defaults to False.
 
         Returns:
-            Dict[str, Union[int, str, date, None]]: A dictionary with the attributes as key and the corresponding value.
+            Dict[str, Union[int, str, date, Dict, None]]: A dictionary with the attributes as key and the corresponding value.
         """
         data = {
             'id': self._id,
