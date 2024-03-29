@@ -3,8 +3,16 @@ import { Gender, TypeOfIdentifications } from "../models/enums";
 import { StudentRenderer } from "../renderer/StudentRenderer";
 import { StudentRepository } from "../repository/StudentRepository";
 
+/**
+ * Controller class for managing student-related operations.
+ */
 export class StudentController {
-  static init() {
+  /**
+   * Initializes the student controller by rendering the student creation form and attaching event listeners.
+   *
+   * @throws {Error} If the container or form elements are not found in the DOM.
+   */
+  static init(): void {
     const container = document.querySelector("#container-form-create-student");
 
     if (container === null) throw new Error("Container not found in the DOM");
@@ -19,7 +27,12 @@ export class StudentController {
     form.addEventListener("submit", StudentController.handleSubmitCreate);
   }
 
-  private static async handleSubmitCreate(e: Event) {
+  /**
+   * Handles the form submission for creating a new student.
+   *
+   * @param {Event} e - The form submission event.
+   */
+  private static async handleSubmitCreate(e: Event): Promise<void> {
     e.preventDefault();
     if (e.target instanceof HTMLFormElement) {
       const elements = e.target.elements;

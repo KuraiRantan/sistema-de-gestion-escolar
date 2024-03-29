@@ -1,14 +1,37 @@
 import { Gender, TypeOfIdentifications } from "../models/enums";
 import { createElementWithAttributes } from "../utils/elementCreator";
 
+/**
+ * Abstract class for rendering UI components.
+ *
+ * @abstract
+ */
 export abstract class Render {
+  /**
+   * Renders the UI component within the specified container.
+   *
+   * @param {Element} container - The container element to render the UI component into.
+   */
   abstract render(container: Element): void;
 }
 
+/**
+ * Class for rendering student-related UI components.
+ */
 export class StudentRenderer implements Render {
+  /**
+   * HTML element representing the student form.
+   *
+   * @type {HTMLElement | null}
+   */
   static htmlElement: HTMLElement | null = null;
 
-  private init() {
+  /**
+   * Initializes the student form HTML element.
+   *
+   * @private
+   */
+  private init(): void {
     if (StudentRenderer.htmlElement !== null) return;
     const form = createElementWithAttributes("form", {
       id: "form-create-student",
@@ -163,6 +186,11 @@ export class StudentRenderer implements Render {
     StudentRenderer.htmlElement = form;
   }
 
+  /**
+   * Renders the student form within the specified container.
+   *
+   * @param {Element} container - The container element to render the student form into.
+   */
   render(container: Element): void {
     this.init();
     if (StudentRenderer.htmlElement === null) {
