@@ -1,4 +1,4 @@
-FROM python:3.8-alpine3.19
+FROM python:3.9.19-slim-bookworm
 
 LABEL version = "1.0.0"
 LABEL description = ""
@@ -6,11 +6,11 @@ LABEL org.opencontainers.image.authors = "Jorge Camargo<jorgecamargo2012902@gmai
 
 ENV PASSWORD_ADMIN_SERVER=pwd
 
-RUN apk update && apk upgrade
+RUN apt-get update && apt-get upgrade
 
-RUN apk add --no-cache wget unzip py3-pip libpq-dev openssl
+RUN apt-get install -y wget unzip python3-pip libpq-dev openssl
 
-RUN adduser -D admin
+RUN useradd -m admin
 
 USER admin
 

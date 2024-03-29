@@ -15,7 +15,7 @@ services:
     environment:
       - PASSWORD_ADMIN_SERVER=${PASSWORD_ADMIN_SERVER:-pwd}
   db:
-    image: postgres:alpine3.19
+    image: postgres
     ports:
       - "8006:5432"
     restart: always
