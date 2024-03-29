@@ -2,8 +2,9 @@ const handleChangeAttendanceStatus = (e) => {
   let areCheckedAny = false;
   let prevSelectedRadio = null;
   const currentSelectedRadio = e.target;
+  const form = e.target.form;
 
-  for (let radio of e.target.form.querySelectorAll("input")) {
+  for (let radio of form.querySelectorAll("input")) {
     const dataUnknow = radio.attributes.getNamedItem("data-unknow");
     if (dataUnknow === null) {
       radio.setAttribute("data-unknow", "False");
@@ -34,7 +35,7 @@ const handleChangeAttendanceStatus = (e) => {
   }
 
   if ((!resultConfirm && !areCheckedAny) || (resultConfirm && areCheckedAny)) {
-    const id = document.querySelector("#id-attendance")?.value;
+    const id = form.querySelector("#id-attendance")?.value;
     const status = currentSelectedRadio.value;
     if (!id && !status) {
       prevSelectedRadio.checked = true;
@@ -61,42 +62,6 @@ const handleChangeAttendanceStatus = (e) => {
     prevSelectedRadio.setAttribute("data-unknow", "True");
     currentSelectedRadio.setAttribute("data-unknow", "False");
   }
-
-  // if (areCheckedAny) {
-  //   // const resultConfirm = confirm(
-  //   //   "¿Realmente desea actualizar el estado de asistencia del estudiante?"
-  //   // );
-
-  //   if (!resultConfirm) {
-  //     prevSelectedRadio.checked = true;
-  //     prevSelectedRadio.setAttribute("data-unknow", "True");
-  //     currentSelectedRadio.setAttribute("data-unknow", "False");
-  //     //   e.target.setAttribute("data-unknow", "False");
-  //   } else {
-  //     const id = document.querySelector("#id-attendance")?.value;
-  //     const status = currentSelectedRadio.value;
-  //     if (!id && !status) {
-  //       prevSelectedRadio.checked = true;
-  //       prevSelectedRadio.setAttribute("data-unknow", "True");
-  //       currentSelectedRadio.setAttribute("data-unknow", "False");
-  //       return alert(
-  //         "Hay una inconsistencia en los datos, comuniquese con el administrador del sitio."
-  //       );
-  //     }
-  //     const data = {
-  //       id,
-  //       status,
-  //     };
-  //     fetchChangeStatus(data)
-  //       .then()
-  //       .catch(() => {
-  //         prevSelectedRadio.checked = true;
-  //         prevSelectedRadio.setAttribute("data-unknow", "True");
-  //         currentSelectedRadio.setAttribute("data-unknow", "False");
-  //         alert("Error al cambiar el estado del estudiante.");
-  //       });
-  //   }
-  // }
 };
 
 const fetchChangeStatus = async (data) => {
