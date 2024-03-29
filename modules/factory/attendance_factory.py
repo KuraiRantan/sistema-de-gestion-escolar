@@ -1,18 +1,28 @@
-from utils.validate_fields import fields_are_valid, validate_data_types
+from modules.utils.validate_fields import fields_are_valid, validate_data_types
 from modules.models.attendance import Attendance
 from modules.models.definitions import AttendanceStatus
+from modules.models.student import Student
+from modules.models.subject import Subject
+from modules.models.classroom import Classroom
+from datetime import date
 
 class AttendanceFactory(object):
+    """Factory to create Attendance instances.
+
+    This class provides methods to create instances of different types of attendances depending on the case that is required.
+    """
+    # Define the expected data types for each key in the data dictionary.
     TYPES = {
             'id': int,
-            'student': int,
-            'subject': int,
-            'classroom': int,
+            'student': Student,
+            'subject': Subject,
+            'classroom': Classroom,
             'grade': str,
             'status': [s.value for s in AttendanceStatus],
-            'attendance_date': str,
+            'attendance_date': date,
             'notes': str,
     }
+    # Defines the actions and required fields for each action.
     ACTIONS= {
         'create': [
             'student',
@@ -44,7 +54,29 @@ class AttendanceFactory(object):
     }
 
     @staticmethod
-    def create(**data:dict):
+    def create(**data: dict) -> Attendance:
+        """Static method that validates the attributes necessary for the creation of new attendance, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the attendance instance.
+                Required:
+                    - student (Student)
+                    - subject (Subject)
+                    - classroom (Classroom)
+                    - grade (str)
+                
+                Optional:
+                    - status (str): AttendanceStatus
+                    - attendance_date (date)
+                    - notes (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Attendance: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(AttendanceFactory.ACTIONS['create'], data):
             if validate_data_types(AttendanceFactory.TYPES, data):
                 return Attendance(
@@ -57,12 +89,35 @@ class AttendanceFactory(object):
                     notes=data.get('notes', None),
                 )
             else:
-                raise TypeError('Types of data is not valid.')
+                raise TypeError('Types of data is not valid.', data)
         else:
             raise ValueError('Required fields are missing.')
 
     @staticmethod
-    def update(**data:dict):
+    def update(**data: dict) -> Attendance:
+        """Static method that validates the attributes necessary for updating attendances, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the attendance instance.
+                Required:
+                    - id (int)
+                    - student (Student)
+                    - subject (Subject)
+                    - classroom (Classroom)
+                    - grade (str)
+                
+                Optional:
+                    - status (str): AttendanceStatus
+                    - attendance_date (date)
+                    - notes (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Attendance: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(AttendanceFactory.ACTIONS['update'], data):
             if validate_data_types(AttendanceFactory.TYPES, data):
                 return Attendance(
@@ -81,7 +136,21 @@ class AttendanceFactory(object):
             raise ValueError('Required fields are missing,')
 
     @staticmethod
-    def delete(**data):
+    def delete(**data: dict) -> Attendance:
+        """Static method that validates the attributes necessary for the elimination of attendances, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the attendance instance.
+                Required:
+                    - id (int)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Attendance: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(AttendanceFactory.ACTIONS['delete'], data):
             if validate_data_types(AttendanceFactory.TYPES, data):
                 return Attendance(
@@ -92,7 +161,30 @@ class AttendanceFactory(object):
         else:
             raise ValueError('Required fields are missing.')
 
-    def list(**data):
+    def list(**data: dict) -> Attendance:
+        """Static method that validates the attributes necessary to list attendances, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the attendance instance.
+                Required:
+                    - id (int)
+                    - student (Student)
+                    - subject (Subject)
+                    - classroom (Classroom)
+                    - grade (str)
+                
+                Optional:
+                    - status (str): AttendanceStatus
+                    - attendance_date (date)
+                    - notes (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Attendance: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(AttendanceFactory.ACTIONS['list'], data):
             if validate_data_types(AttendanceFactory.TYPES, data):
                 return Attendance(
@@ -110,7 +202,28 @@ class AttendanceFactory(object):
         else:
             raise ValueError('Required fields are missing.')
 
-    def default(**data):
+    @staticmethod
+    def default(**data: dict) -> Attendance:
+        """Static method that receives the attributes you want in case the other methods don't meet your needs, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the attendance instance.
+                Optional:
+                    - id (int)
+                    - student (Student)
+                    - subject (Subject)
+                    - classroom (Classroom)
+                    - grade (str)
+                    - status (str): AttendanceStatus
+                    - attendance_date (date)
+                    - notes (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+
+        Returns:
+            Attendance: Instance generated from the data provided to the method.
+        """
         if validate_data_types(AttendanceFactory.TYPES, data):
             return Attendance(
                 id=data.get('id', None),
