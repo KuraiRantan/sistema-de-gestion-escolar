@@ -1,21 +1,28 @@
-from utils.validate_fields import fields_are_valid, validate_data_types
-from models.student import Student
-from models.definitions import Gender, TypeOfIdentifications
+from datetime import date
+from modules.utils.validate_fields import fields_are_valid, validate_data_types
+from modules.models.student import Student
+from modules.models.definitions import Gender, TypeOfIdentifications
 
 class StudentFactory(object):
+    """Factory to create student instances.
+
+    This class provides methods to create instances of different types of students depending on the case that is required.
+    """
+    # Define the expected data types for each key in the data dictionary.
     TYPES = {
             'id': int,
             'type_of_identification': [t.value for t in TypeOfIdentifications],
             'identification': str,
             'first_name': str,
             'last_name': str,
-            'birthdate': str,
+            'birthdate': date,
             'gender': [g.value for g in Gender],
             'address': str,
             'email': str,
             'phone': str,
             'current_grade': str
     }
+    # Defines the actions and required fields for each action.
     ACTIONS= {
         'create': [
             'type_of_identification',
@@ -52,7 +59,32 @@ class StudentFactory(object):
     }
 
     @staticmethod
-    def create(**data:dict):
+    def create(**data:dict) -> Student:
+        """Static method that validates the attributes necessary for the creation of new students, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the student instance.
+                Required:
+                    - type_of_identification (str): TypeOfIdentification
+                    - identification (str)
+                    - first_name (str)
+                    - last_name (str)
+                    - birthdate (date)
+                    - gender (str): Gender
+                    - current_grade (str)
+
+                Optional:
+                    - address (str)
+                    - email (str)
+                    - phone (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Student: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(StudentFactory.ACTIONS['create'], data):
             if validate_data_types(StudentFactory.TYPES, data):
                 return Student(
@@ -73,7 +105,33 @@ class StudentFactory(object):
             raise ValueError('Required fields are missing.')
 
     @staticmethod
-    def update(**data:dict):
+    def update(**data:dict) -> Student:
+        """Static method that validates the attributes necessary for updating students, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the student instance.
+                Required:
+                    - id (int)
+                    - type_of_identification (str): TypeOfIdentification
+                    - identification (str)
+                    - first_name (str)
+                    - last_name (str)
+                    - birthdate (date)
+                    - gender (str): Gender
+                    - current_grade (str)
+
+                Optional:
+                    - address (str)
+                    - email (str)
+                    - phone (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Student: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(StudentFactory.ACTIONS['update'], data):
             if validate_data_types(StudentFactory.TYPES, data):
                 return Student(
@@ -95,7 +153,21 @@ class StudentFactory(object):
             raise ValueError('Required fields are missing,')
 
     @staticmethod
-    def delete(**data):
+    def delete(**data) -> Student:
+        """Static method that validates the attributes necessary for the elimination of students, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the student instance.
+                Required:
+                    - id (int)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Student: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(StudentFactory.ACTIONS['delete'], data):
             if validate_data_types(StudentFactory.TYPES, data):
                 return Student(
@@ -106,7 +178,34 @@ class StudentFactory(object):
         else:
             raise ValueError('Required fields are missing.')
 
-    def list(**data):
+    @staticmethod
+    def list(**data: dict) -> Student:
+        """Static method that validates the attributes necessary to list students, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the student instance.
+                Required:
+                    - id (int)
+                    - type_of_identification (str): TypeOfIdentification
+                    - identification (str)
+                    - first_name (str)
+                    - last_name (str)
+                    - birthdate (date)
+                    - gender (str): Gender
+                    - current_grade (str)
+
+                Optional:
+                    - address (str)
+                    - email (str)
+                    - phone (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+            ValueError: Error caused by missing attributes for the operation in question.
+
+        Returns:
+            Student: Instance generated from the data provided to the method.
+        """
         if fields_are_valid(StudentFactory.ACTIONS['list'], data):
             if validate_data_types(StudentFactory.TYPES, data):
                 return Student(
@@ -123,11 +222,35 @@ class StudentFactory(object):
                     current_grade=data.get('current_grade')
                 )
             else:
-                raise TypeError('Types of data is not valid.')
+                raise TypeError('Types of data is not valid.', data)
         else:
             raise ValueError('Required fields are missing.')
 
-    def default(**data):
+    @staticmethod
+    def default(**data: dict) -> Student:
+        """Static method that receives the attributes you want in case the other methods don't meet your needs, returning an instance ready to be used.
+
+        Args:
+            **data (dict): Dictionary containing data to generate the student instance.
+                Optional:
+                    - id (int)
+                    - type_of_identification (str): TypeOfIdentification
+                    - identification (str)
+                    - first_name (str)
+                    - last_name (str)
+                    - birthdate (date)
+                    - gender (str): Gender
+                    - current_grade (str)
+                    - address (str)
+                    - email (str)
+                    - phone (str)
+
+        Raises:
+            TypeError: Error produced by sending an attribute with a data type different from the one defined.
+
+        Returns:
+            Student: Instance generated from the data provided to the method.
+        """
         if validate_data_types(StudentFactory.TYPES, data):
             return Student(
                 id=data.get('id', None),
