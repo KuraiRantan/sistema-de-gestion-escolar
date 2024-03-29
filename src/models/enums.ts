@@ -1,4 +1,8 @@
 // Person model
+/**
+ * Enum representing different types of identifications.
+ * @enum {string}
+ */
 export enum TypeOfIdentifications {
   IC = "Identity Card",
   CC = "Citizenship Card",
@@ -6,6 +10,10 @@ export enum TypeOfIdentifications {
   FI = "Foreigner Id",
 }
 
+/**
+ * Enum representing different genders.
+ * @enum {string}
+ */
 export enum Gender {
   M = "Male",
   F = "Female",
@@ -13,6 +21,10 @@ export enum Gender {
 }
 
 // Attendance model
+/**
+ * Enum representing attendance statuses.
+ * @enum {string}
+ */
 export enum AttendanceStatus {
   PRESENT = "Present",
   ABSENT = "Absent",
