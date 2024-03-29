@@ -1,6 +1,14 @@
 import { Student } from "../models/Student";
 
+/**
+ * Repository class for handling student-related operations.
+ */
 export class StudentRepository {
+  /**
+   * Creates a new student.
+   * @param {Student} student - The student object to be created.
+   * @throws {Error} If an error occurs during the creation process.
+   */
   static async create(student: Student) {
     try {
       const res = await fetch(
